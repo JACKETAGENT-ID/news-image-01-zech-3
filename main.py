@@ -106,12 +106,12 @@ def main():
     target = out_dir / "entry.png"
     target.write_bytes(blob)
 
-    if hashlib.sha256(target.read_bytes()).hexdigest() != \
-            hashlib.sha256(blob).hexdigest():
+    digest = hashlib.sha256(blob).hexdigest()
+    if hashlib.sha256(target.read_bytes()).hexdigest() != digest:
         return fail("the written entry does not match the bundled image")
 
-    print("wrote %s (%s, %dx%d, %d bytes)"
-          % (target, fmt, width, height, len(blob)))
+    print("wrote %s (%s, %dx%d, %d bytes, sha256 %s)"
+          % (target, fmt, width, height, len(blob), digest[:16]))
     return 0
 
 
